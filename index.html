@@ -29,15 +29,27 @@
 			    <label for="inputName">請輸入你的名字</label>
 			    <input type="text" class="form-control" id="inputName" placeholder="請輸入你的名字">
 			  </div>			  
+			  <div class="form-group">
+			    <label for="inputTarget">請輸入你不想成為的對象</label>
+			    <input type="text" class="form-control" id="inputTarget" placeholder="預設：神豬" value="神豬">
+			  </div>			  
 			  <button id="submit-btn" class="btn btn-default">送出</button>
 			  <a id="download-btn" class="btn btn-default">下載頭像</a>
 			</form>
 
 			<canvas id="generated-image" width="650px" height="650px" style="margin:10px;"></canvas>		
 			<script>
+				generateImage();
 				$("#submit-btn").click(function() {
+					generateImage();	
+					return false;
+				});				
+				$("#download-btn").click(function() {
+					downloadCanvas(this, 'generated-image', 'i-dont-want-be-seanlien.png');
+				});
+				function generateImage() {
 					var canvas = document.getElementById("generated-image").getContext('2d');
-					canvas.font="80px Heiti TC";
+					canvas.font="73px Heiti TC";
 					img=new Image();
 					img.src="empty.png";
 			        canvas.width=650;
@@ -45,14 +57,11 @@
 		            canvas.drawImage(img,0,0,img.width,img.height,0,0,650,650);		        
 					canvas.fillText($("#weight").val(), 290, 340);	
 					canvas.fillText($("#inputName").val(), 70, 540);	
+					canvas.fillText($("#inputTarget").val()+"，", 355, 185);	
 					var dt = new Date();
 					var time = dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDate();
 					canvas.fillText(time, 70, 615);	
-					return false;
-				});
-				$("#download-btn").click(function() {
-					downloadCanvas(this, 'generated-image', 'i-dont-want-be-seanlien.png');
-				});
+				}
 				function downloadCanvas(link, canvasId, filename) {
 				    link.href = document.getElementById(canvasId).toDataURL();
 				    link.download = filename;
