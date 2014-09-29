@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<style type="text/css">
+			#generated-image { background:url(empty.png) }
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="page-header">
+			  <h1>我不想當神豬之真男人挑戰賽</h1>
+			</div>
+			<form role="form">
+			  <div class="form-group">
+			    <label for="inputWeight">請輸入你的目標體重</label>
+			    <input type="text" class="form-control" id="weight" placeholder="請輸入你的目標體重">
+			  </div>
+			  <div class="form-group">
+			    <label for="inputName">請輸入你的名字</label>
+			    <input type="text" class="form-control" id="inputName" placeholder="請輸入你的名字">
+			  </div>			  
+			  <button id="submit-btn" class="btn btn-default">送出</button>
+			  <a id="download-btn" class="btn btn-default">下載頭像</a>
+			</form>
+
+			<canvas id="generated-image" width="650px" height="650px" style="margin:10px;"></canvas>		
+			<script>
+				$("#submit-btn").click(function() {
+					var canvas = document.getElementById("generated-image").getContext('2d');
+					canvas.font="80px Heiti TC";
+					img=new Image();
+					img.src="empty.png";
+			        canvas.width=650;
+		            canvas.height=650;
+		            canvas.drawImage(img,0,0,img.width,img.height,0,0,650,650);		        
+					canvas.fillText($("#weight").val(), 290, 340);	
+					canvas.fillText($("#inputName").val(), 70, 540);	
+					var dt = new Date();
+					var time = dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDate();
+					canvas.fillText(time, 70, 615);	
+					return false;
+				});
+				$("#download-btn").click(function() {
+					downloadCanvas(this, 'generated-image', 'i-dont-want-be-seanlien.png');
+				});
+				function downloadCanvas(link, canvasId, filename) {
+				    link.href = document.getElementById(canvasId).toDataURL();
+				    link.download = filename;
+				}
+			</script>
+
+		</div>
+	</body>
+</html>
