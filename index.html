@@ -11,9 +11,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-		<style type="text/css">
-			#generated-image { background:url(empty.png) }
-		</style>
+		
 	</head>
 	<body>
 		<div class="container">
@@ -32,14 +30,21 @@
 			  <div class="form-group">
 			    <label for="inputTarget">請輸入你不想成為的對象</label>
 			    <input type="text" class="form-control" id="inputTarget" placeholder="預設：神豬" value="神豬">
-			  </div>			  
+			  </div>
+			  <div class="checkbox">
+			    <label>
+			      <input type="checkbox" id="support-hk"> 聲援香港版
+			    </label>
+			  </div>
+			  
 			  <button id="submit-btn" class="btn btn-default">送出</button>
 			  <a id="download-btn" class="btn btn-default">下載頭像</a>
 			</form>
 
 			<canvas id="generated-image" width="650px" height="650px" style="margin:10px;"></canvas>		
-			<script>
-				generateImage();
+			<script>				
+				var supportHk = false;
+				
 				$("#submit-btn").click(function() {
 					generateImage();	
 					return false;
@@ -47,20 +52,30 @@
 				$("#download-btn").click(function() {
 					downloadCanvas(this, 'generated-image', 'i-dont-want-be-seanlien.png');
 				});
+				$(document).ready(function() {					
+					$("#support-hk").change(function() {
+						supportHk = $(this).is(":checked");
+						generateImage();	
+					});
+					generateImage();
+				});
 				function generateImage() {
-					var canvas = document.getElementById("generated-image").getContext('2d');
+					var canvas = document.getElementById("generated-image").getContext('2d');					
 					canvas.font="73px Heiti TC";
-					img=new Image();
-					img.src="empty.png";
-			        canvas.width=650;
+					canvas.width=650;
 		            canvas.height=650;
-		            canvas.drawImage(img,0,0,img.width,img.height,0,0,650,650);		        
-					canvas.fillText($("#weight").val(), 300, 337);	
-					canvas.fillText($("#inputName").val(), 70, 540);	
-					canvas.fillText($("#inputTarget").val()+"，", 355, 185);	
-					var dt = new Date();
-					var time = dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDate();
-					canvas.fillText(time, 70, 615);	
+					img=new Image();
+					img.onload = function() {
+						canvas.drawImage(img,0,0,img.width,img.height,0,0,650,650);		        	
+						canvas.fillStyle= (supportHk ? "#F7E81B" : "#000000");		            
+						canvas.fillText($("#weight").val(), 300, 337);	
+						canvas.fillText($("#inputName").val(), 70, 540);	
+						canvas.fillText($("#inputTarget").val()+"，", 355, 185);	
+						var dt = new Date();
+						var time = dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDate();
+						canvas.fillText(time, 70, 615);	
+					}
+					img.src=(supportHk ? "empty_hk.png" : "empty.png");			        		            
 				}
 				function downloadCanvas(link, canvasId, filename) {
 				    link.href = document.getElementById(canvasId).toDataURL();
